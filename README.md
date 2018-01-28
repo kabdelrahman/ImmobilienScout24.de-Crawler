@@ -10,7 +10,7 @@ Usage
 1. Make sure that all dependencies are installed.
 2. Download the .py file in this repository.
 3. Run the file inside Python
-4. Use either wohnung_data_clean.csv or wohnung_data_raw.csv for further analysis
+4. Use either immoscout_data_clean.csv or immoscout_data_raw.csv for further analysis
 
 Possible Sources of Error:
 The crawler was written while using UTF-8, so make sure that you set encoding to UTF-8 in your IDE.
@@ -18,8 +18,8 @@ The crawler was written while using UTF-8, so make sure that you set encoding to
 Output
 
 While crawling, the crawler will print out the website it is currently processing. Every link comes with a progress indicator.
-In the crawler's directory you'll find two similar files: wohnung_data_clean.csv and wohnung_data_raw.csv. Both files contain the same data. However, wohnung_data_clean.csv has already been cleaned and is ready for analysis. If you prefer to work with the data that comes directly from Immobilienscout24.de, then you should use wohnung_data_raw.csv.
-There are six variables inside the clean version. Price indicates the price for a given real estate (either rent or total price). size is the size of a listing in square meters. location_first is the most precise location indication (should be equal to the street in most cases). location_last should be equal to the city. real_estate tells you whether it is a flat ("Wohnung") or a house ("Haus"). "ownership" indicates whether the given real estate is for rent ("Miete") or for sale ("Kauf").
+In the crawler's directory you'll find two similar files: immoscout_data_clean.csv and immoscout_data_raw.csv. Both files contain the same data. However, immoscout_data_clean.csv has already been cleaned and is ready for analysis. If you prefer to work with the data that comes directly from Immobilienscout24.de, then you should use immoscout_data_raw.csv.
+There are seven variables inside the clean version. Price indicates the price for a given real estate (either rent or total price). Size is the size of a listing in square meters. location_first is the most precise location indication (should be equal to the street in most cases). location_last should be equal to the city. real_estate tells you whether it is a flat ("Wohnung") or a house ("Haus"). "ownership" indicates whether the given real estate is for rent ("Miete") or for sale ("Kauf"). "crawled" tells you when a certain real estate was crawled. This is supposed to make working with consecutive crawls easier.
 
 Formatting
 
