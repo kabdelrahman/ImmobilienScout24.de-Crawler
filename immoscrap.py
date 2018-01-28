@@ -9,7 +9,12 @@ from urllib.error import URLError
 from bs4 import BeautifulSoup
 from pandas import DataFrame
 import re
+import datetime
 
+
+#get current date#
+current_datetime_master = datetime.datetime.now()
+current_datetime = current_datetime_master.strftime("%Y%m%d_%H%M%S")
 
 #define sub-sites# 
 site_list = ["/Wohnung-Miete", 
@@ -21,7 +26,7 @@ site_list = ["/Wohnung-Miete",
 domain="https://www.immobilienscout24.de/Suche/S-T"
 
 #initialize dataframe
-wohnung_data = DataFrame()
+immoscout_data = DataFrame()
 
 
 ####EXTRACTING LINKS FOR CRAWLER####
@@ -60,7 +65,7 @@ def get_data(url):
         rawdata_extract = site_extract.find_all("div", {"class":"result-list-entry__data"})#extract every result box
     except AttributeError as e:
         return None
-    global wohnung_data#use global dataframe
+    global immoscout_data#use global dataframe
     price = []
     size = []
     location = []
@@ -87,7 +92,7 @@ def get_data(url):
             ownership.append("Miete")
         elif "-Kauf" in url_raw:
             ownership.append("Kauf")
-    wohnung_data = wohnung_data.append(DataFrame({"price":price, 
+    immoscout_data = immoscout_data.append(DataFrame({"price":price, 
                                                   "size":size,
                                                   "location":location, 
                                                   "real_estate":immo_type, 
@@ -121,7 +126,7 @@ immo_crawl(site_list)#start crawler
 
 ####PROCESS DATA####
 
-wohnung_data.to_csv("wohnung_data_raw.csv", sep=";", index=False)#export unprocessed data
+immoscout_data.to_csv("immoscout_data_raw_"+current_datetime+".csv", sep=";", index=False)#export unprocessed data
 
 
 #clean data#
@@ -142,10 +147,12 @@ def get_lastlayer(data):
     last_layer = data.split(",")[-1]
     return last_layer.strip()
     
-wohnung_data_clean = wohnung_data.dropna(axis=0)
-wohnung_data_clean["price"] = wohnung_data_clean["price"].apply(clean_pricesize)
-wohnung_data_clean["size"] = wohnung_data_clean["size"].apply(clean_pricesize)
-wohnung_data_clean["location_first"] = wohnung_data_clean["location"].apply(get_firstlayer)
-wohnung_data_clean["location_last"] = wohnung_data_clean["location"].apply(get_lastlayer)
+immoscout_data_clean = immoscout_data.dropna(axis=0)
+immoscout_data_clean["price"] = immoscout_data_clean["price"].apply(clean_pricesize)
+immoscout_data_clean["size"] = immoscout_data_clean["size"].apply(clean_pricesize)
+immoscout_data_clean["location_first"] = immoscout_data_clean["location"].apply(get_firstlayer)
+immoscout_data_clean["location_last"] = immoscout_data_clean["location"].apply(get_lastlayer)
 
-wohnung_data_clean.to_csv("wohnung_data_clean.csv", sep=";", index=False)
+immoscout_data_clean["crawled"] = current_datetime_master.strftime("%Y-%m-%d %H:%M:%S")
+
+immoscout_data_clean.to_csv("immoscout_data_clean_"+current_datetime+".csv", sep=";", index=False)
