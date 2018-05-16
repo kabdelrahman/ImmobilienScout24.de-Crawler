@@ -71,7 +71,7 @@ def get_data(url):
     location = []
     ownership = []
     immo_type = []
-    for i in range(1,len(rawdata_extract)):
+    for i in range(0,len(rawdata_extract)):
         try:
             price.append(rawdata_extract[i].find_all("dd")[0].get_text().strip())#extract price
         except:
